@@ -15,7 +15,7 @@ RSpec.describe UploadedFilesController, type: :controller do
 
             expect(response).to have_http_status(:success)
             json_response = JSON.parse(response.body)
-            # binding.pry
+            binding.pry
             expect(json_response['presigned_url']).to include('https://analogcapstonefiles.s3.amazonaws.com/test_file_name')
         end
     end
