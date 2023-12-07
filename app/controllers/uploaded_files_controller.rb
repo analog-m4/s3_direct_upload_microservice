@@ -4,7 +4,7 @@ class UploadedFilesController < ApplicationController
     def create_presigned_url
         s3 = Aws::S3::Resource.new(region: 'us-east-1')
         obj = s3.bucket('analogcapstonefiles').object(params[:file_name])
-        url = obj.presigned_url(:put, acl: 'public-read')
+        url = obj.presigned_url(:put)
 
         render json: { presigned_url: url }, status: 200
     end
