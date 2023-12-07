@@ -219,7 +219,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  aws-sdk-s3
+  aws-sdk-s3 (~> 1)
   bootsnap
   debug
   image_processing (~> 1.2)
