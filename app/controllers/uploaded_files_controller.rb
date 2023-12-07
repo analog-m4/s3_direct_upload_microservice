@@ -11,8 +11,7 @@ class UploadedFilesController < ApplicationController
 
     def upload_complete
         uploaded_file = UploadedFile.create(
-            file_name: params[:file_name],
-            s3_key: params[:s3_key]
+            file_name: params[:file_name]
         )
 
         if uploaded_file.persisted?
