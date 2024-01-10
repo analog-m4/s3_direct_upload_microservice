@@ -1,8 +1,8 @@
 class CircuitBreaker
-  attr_reader :failute_threshold, :recovery_timeout
+  attr_reader :failure_threshold, :recovery_timeout
 
-  def initialize(failute_threshold: 5, recovery_timeout: 60)
-    @failute_threshold = failure_threshold
+  def initialize(failure_threshold: 3, recovery_timeout: 30)
+    @failure_threshold = failure_threshold
     @recovery_timeout = recovery_timeout
     @state = :closed
     failure_count = 0
