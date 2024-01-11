@@ -1,12 +1,15 @@
 require 'rails_helper'
 
 describe CircuitBreaker do
-  subject(:circuit_breaker) { described_class.new(failure_threshold: 2, recovery_timeout: 1) }
-
   context 'when operation is successful' do
     it 'allows the operation to run and stays closed' do
-      expect { |b| circuit_breaker.call(&b) }.to yield_control
-      expect(circuit_breaker.closed?).to be true
+      circuit_breaker = CircuitBreaker.new(failure_threshold: 2, recovery_timeout: 1)
+      
+      expect {
+        circuit_breaker.call {puts "Operation successful"} 
+    }.to output("Operation successful\n").to_stdout
+      
+      expect(circuit_breaker.send(:closed?)).to be true
     end
   end
 
