@@ -1,8 +1,8 @@
 require "rails_helper"
 
 describe CircuitBreaker do
-  context 'when operation is successful' do
-    it 'allows the operation to run and stays closed' do
+  context 'when circuit breaker is successful' do
+    it 'allows the app to run and stays closed' do
       circuit_breaker = CircuitBreaker.new(failure_threshold: 2, recovery_timeout: 1)
       
       expect {
@@ -13,7 +13,7 @@ describe CircuitBreaker do
     end
   end
 
-  context 'when operation fails' do
+  context 'when circuit breaker fails' do
     circuit_breaker = CircuitBreaker.new(failure_threshold: 2, recovery_timeout: 1)
     let(:failing_operation) { -> { raise StandardError, 'Operation failed' } }
 
@@ -25,14 +25,18 @@ describe CircuitBreaker do
   end
 
   context 'after the recovery timeout' do
+    circuit_breaker = CircuitBreaker.new(failure_threshold: 2, recovery_timeout: 1)
     let(:failing_operation) { -> { raise StandardError, 'Operation failed' } }
 
     it 'attempts to reset the circuit' do
       2.times { circuit_breaker.call(&failing_operation) rescue StandardError }
-      sleep 1.1 # wait for recovery timeout
+      sleep 1.1 
 
-      expect { |b| circuit_breaker.call(&b) }.to yield_control
-      expect(circuit_breaker.closed?).to be true
+      expect {
+        circuit_breaker.call {puts "Operation successful"} 
+    }.to output("Operation successful\n").to_stdout
+      
+      expect(circuit_breaker.send(:closed?)).to be true
     end
   end
 end
