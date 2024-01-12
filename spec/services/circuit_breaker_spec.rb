@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe CircuitBreaker do
   context 'when operation is successful' do
@@ -14,12 +14,13 @@ describe CircuitBreaker do
   end
 
   context 'when operation fails' do
+    circuit_breaker = CircuitBreaker.new(failure_threshold: 2, recovery_timeout: 1)
     let(:failing_operation) { -> { raise StandardError, 'Operation failed' } }
 
     it 'opens after specified number of failures' do
       expect { 
         2.times { circuit_breaker.call(&failing_operation) rescue StandardError }
-      }.to change { circuit_breaker.open? }.from(false).to(true)
+      }.to change { circuit_breaker.send(:open?)}.from(false).to(true)
     end
   end
 
