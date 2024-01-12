@@ -14,6 +14,9 @@ For all other information about this application see the [application org page](
 6. Start the local server by running `rails s`
 7. Visit the app on `localhost:3000` in your web browser
 
+## Application Updates 
+- Added a circuit breaker design for file uploads
+
 ## Contributors
 
 - [William Chen](https://www.linkedin.com/in/williamfchen/) - Github: [@williamfchen](https://github.com/williamfchen)
